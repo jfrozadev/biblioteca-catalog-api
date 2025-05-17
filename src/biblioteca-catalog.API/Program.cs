@@ -4,6 +4,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+using Microsoft.EntityFrameworkCore;
+using biblioteca_catalog.Infrastructure.Data.Context; // Verifique se o namespace está correto
+
+// Configurar o DbContext com SQL Server
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // Obtém a string de conexão do appsettings.Development.json
+
+builder.Services.AddDbContext<biblioteca_catalogDbContext>(options =>
+    options.UseSqlServer(connectionString)); // Configura o DbContext para usar SQL Server
 
 var app = builder.Build();
 
