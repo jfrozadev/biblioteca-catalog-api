@@ -1,4 +1,3 @@
-csharp
 using MediatR;
 using biblioteca_catalog.Application.DTOs.EntityDtos; // Verifique se o namespace está correto
 

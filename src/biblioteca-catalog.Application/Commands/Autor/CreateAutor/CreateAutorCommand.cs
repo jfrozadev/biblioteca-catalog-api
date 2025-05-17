@@ -1,4 +1,3 @@
-csharp
 using MediatR;
 
 namespace biblioteca_catalog.Application.Commands.Autor.CreateAutor

@@ -1,4 +1,3 @@
-csharp
 namespace biblioteca_catalog.Application.DTOs.EntityDtos
 {
     public class AssuntoDto

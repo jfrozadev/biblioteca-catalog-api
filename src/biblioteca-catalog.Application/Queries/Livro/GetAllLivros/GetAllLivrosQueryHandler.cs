@@ -1,4 +1,3 @@
-csharp
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,3 @@
-csharp
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

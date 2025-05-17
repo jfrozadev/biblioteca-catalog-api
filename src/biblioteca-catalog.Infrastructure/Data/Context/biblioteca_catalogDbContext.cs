@@ -1,4 +1,3 @@
-csharp
 using Microsoft.EntityFrameworkCore;
 using biblioteca_catalog.Domain.Entities;
 

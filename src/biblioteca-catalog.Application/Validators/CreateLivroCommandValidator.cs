@@ -1,4 +1,3 @@
-csharp
 using FluentValidation;
 using biblioteca_catalog.Application.Commands.Livro.CreateLivro;
 

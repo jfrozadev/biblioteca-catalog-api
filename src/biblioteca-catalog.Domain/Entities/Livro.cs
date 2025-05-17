@@ -1,4 +1,3 @@
-csharp
 using System.Collections.Generic;
 
 namespace biblioteca_catalog.Domain.Entities

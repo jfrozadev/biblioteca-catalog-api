@@ -1,4 +1,3 @@
-csharp
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using biblioteca_catalog.Infrastructure.Data.Context; // Verifique o namespace do seu DbContext
