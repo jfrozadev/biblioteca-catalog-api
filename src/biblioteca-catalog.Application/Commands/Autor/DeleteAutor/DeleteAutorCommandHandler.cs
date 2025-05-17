@@ -1,30 +1,29 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using biblioteca_catalog.Infrastructure.Data.Context; // Verifique o namespace correto
+using biblioteca_catalog.Domain.Interfaces; // Adicionar este using
+using System.Threading;
+using System.Threading.Tasks;
+using biblioteca_catalog.Domain.Entities; // Pode ser necessário para encontrar a entidade antes de remover
+using System.Collections.Generic; // Para KeyNotFoundException
 
 namespace biblioteca_catalog.Application.Commands.Autor.DeleteAutor
 {
     public class DeleteAutorCommandHandler : IRequestHandler<DeleteAutorCommand, Unit>
     {
-        private readonly biblioteca_catalogDbContext _context;
+        private readonly IAutorRepository _autorRepository; // Usar a interface do repositório
 
-        public DeleteAutorCommandHandler(biblioteca_catalogDbContext context)
+        public DeleteAutorCommandHandler(IAutorRepository autorRepository) // Injetar a interface do repositório
         {
-            _context = context;
+            _autorRepository = autorRepository;
         }
 
         public async Task<Unit> Handle(DeleteAutorCommand request, CancellationToken cancellationToken)
         {
-            var autor = await _context.Autores.FindAsync(new object[] { request.CodAu }, cancellationToken);
+            var autor = await _autorRepository.GetByIdAsync(request.CodAu); // Buscar o autor usando o repositório
 
             if (autor == null)
-            {
-                // Considere criar uma exceção customizada para "Não Encontrado"
-                throw new KeyNotFoundException($"Autor com CodAu {request.CodAu} não encontrado.");
-            }
+ throw new KeyNotFoundException($"Autor com CodAu {request.CodAu} não encontrado.");
 
-            _context.Autores.Remove(autor);
-            await _context.SaveChangesAsync(cancellationToken);
+            _autorRepository.Remove(autor); // Remover o autor usando o repositório
 
             return Unit.Value;
         }

@@ -1,26 +1,25 @@
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using biblioteca_catalog.Application.DTOs.Livro;
-using biblioteca_catalog.Infrastructure.Data; // Adjust with your actual DbContext namespace
+using biblioteca_catalog.Application.DTOs.EntityDtos; // Use the correct DTO namespace
+using biblioteca_catalog.Domain.Interfaces; // Add this using for repository interface
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace biblioteca_catalog.Application.Queries.Livro.GetLivroById
 {
-    public class GetLivroByIdQueryHandler : IRequestHandler<GetLivroByIdQuery, LivroDto?>
+    public class GetLivroByIdQueryHandler : IRequestHandler<GetLivroByIdQuery, LivroDto>
     {
-        private readonly ApplicationDbContext _context; // Adjust with your actual DbContext class
+        private readonly ILivroRepository _livroRepository; // Use the repository interface
         private readonly IMapper _mapper;
 
-        public GetLivroByIdQueryHandler(ApplicationDbContext context, IMapper mapper)
+        public GetLivroByIdQueryHandler(ILivroRepository livroRepository, IMapper mapper) // Inject repository and mapper
         {
-            _context = context;
-            _mapper = mapper;
+            _livroRepository = livroRepository;
         }
 
-        public async Task<LivroDto?> Handle(GetLivroByIdQuery request, CancellationToken cancellationToken)
+        public async Task<LivroDto> Handle(GetLivroByIdQuery request, CancellationToken cancellationToken)
         {
-            var livro = await _context.Livros
-                .FirstOrDefaultAsync(l => l.Codl == request.Codl, cancellationToken);
+            var livro = await _livroRepository.GetByIdAsync(request.Codl); // Use the repository to get the livro
 
             if (livro == null)
             {

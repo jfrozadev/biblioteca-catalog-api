@@ -1,25 +1,25 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
-using biblioteca_catalog.Infrastructure.Data.Context; // Assumindo que seu DbContext está aqui
+using biblioteca_catalog.Domain.Interfaces; // Adicionar este using
+using biblioteca_catalog.Domain.Entities; // Pode ser necessário para encontrar a entidade antes de remover
+
 
 namespace biblioteca_catalog.Application.Commands.Livro.DeleteLivro
 {
     public class DeleteLivroCommandHandler : IRequestHandler<DeleteLivroCommand, Unit>
     {
-        private readonly ApplicationDbContext _context; // Assumindo o nome ApplicationDbContext
+        private readonly ILivroRepository _livroRepository; // Usar a interface do repositório
 
-        public DeleteLivroCommandHandler(ApplicationDbContext context)
+        public DeleteLivroCommandHandler(ILivroRepository livroRepository) // Injetar a interface do repositório
         {
-            _context = context;
+            _livroRepository = livroRepository;
         }
 
         public async Task<Unit> Handle(DeleteLivroCommand request, CancellationToken cancellationToken)
         {
-            var livro = await _context.Livros
-                .FirstOrDefaultAsync(l => l.Codl == request.Codl, cancellationToken);
+            var livro = await _livroRepository.GetByIdAsync(request.Codl); // Buscar o livro usando o repositório
 
             if (livro == null)
             {
@@ -28,8 +28,7 @@ namespace biblioteca_catalog.Application.Commands.Livro.DeleteLivro
             }
 
             _context.Livros.Remove(livro);
-            await _context.SaveChangesAsync(cancellationToken);
-
+            _livroRepository.Remove(livro); // Remover o livro usando o repositório
             return Unit.Value;
         }
     }

@@ -1,26 +1,24 @@
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using biblioteca_catalog.Application.DTOs.EntityDtos;
-using biblioteca_catalog.Infrastructure.Data.Context; // Verifique a namespace do seu DbContext
+using biblioteca_catalog.Domain.Interfaces; // Adicionar este using
 
 namespace biblioteca_catalog.Application.Queries.Autor.GetAutorById
 {
     public class GetAutorByIdQueryHandler : IRequestHandler<GetAutorByIdQuery, AutorDto?>
     {
-        private readonly biblioteca_catalogDbContext _context;
+        private readonly IAutorRepository _autorRepository; // Usar a interface do repositório
         private readonly IMapper _mapper;
 
-        public GetAutorByIdQueryHandler(biblioteca_catalogDbContext context, IMapper mapper)
+        public GetAutorByIdQueryHandler(IAutorRepository autorRepository, IMapper mapper) // Injetar o repositório e o mapper
         {
-            _context = context;
+            _autorRepository = autorRepository;
             _mapper = mapper;
         }
 
         public async Task<AutorDto?> Handle(GetAutorByIdQuery request, CancellationToken cancellationToken)
         {
-            var autor = await _context.Autores
-                .FirstOrDefaultAsync(a => a.CodAu == request.CodAu, cancellationToken);
+            var autor = await _autorRepository.GetByIdAsync(request.CodAu); // Buscar o autor usando o repositório
 
             if (autor == null)
             {

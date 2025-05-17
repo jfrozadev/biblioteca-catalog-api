@@ -1,28 +1,27 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using biblioteca_catalog.Infrastructure.Data.Context; // Assuming your DbContext is here
+using biblioteca_catalog.Domain.Interfaces; // Adicionar este using
+using biblioteca_catalog.Domain.Entities; // Pode ser necessário para encontrar a entidade antes de atualizar
 
 namespace biblioteca_catalog.Application.Commands.Livro.UpdateLivro
 {
     public class UpdateLivroCommandHandler : IRequestHandler<UpdateLivroCommand, Unit>
     {
-        private readonly ApplicationDbContext _context; // Assuming your DbContext is named ApplicationDbContext
+        private readonly ILivroRepository _livroRepository; // Usar a interface do repositório
 
-        public UpdateLivroCommandHandler(ApplicationDbContext context)
+        public UpdateLivroCommandHandler(ILivroRepository livroRepository) // Injetar a interface do repositório
         {
-            _context = context;
+            _livroRepository = livroRepository;
         }
 
         public async Task<Unit> Handle(UpdateLivroCommand request, CancellationToken cancellationToken)
         {
-            var livro = await _context.Livros.FirstOrDefaultAsync(l => l.Codl == request.Codl, cancellationToken);
+            var livro = await _livroRepository.GetByIdAsync(request.Codl); // Buscar o livro usando o repositório
 
             if (livro == null)
             {
-                // Throw a custom exception if the book is not found
                 throw new Exception($"Livro com Codl {request.Codl} não encontrado."); // Consider creating a specific NotFoundException
             }
 
@@ -31,7 +30,7 @@ namespace biblioteca_catalog.Application.Commands.Livro.UpdateLivro
             livro.Edicao = request.Edicao;
             livro.AnoPublicacao = request.AnoPublicacao;
 
-            await _context.SaveChangesAsync(cancellationToken);
+            _livroRepository.Update(livro); // Atualizar o livro usando o repositório
 
             return Unit.Value;
         }

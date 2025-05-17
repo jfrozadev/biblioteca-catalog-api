@@ -1,16 +1,18 @@
 using MediatR;
 using biblioteca_catalog.Domain.Entities;
-using biblioteca_catalog.Infrastructure.Data.Context; // Ajuste a namespace se necessário
+using biblioteca_catalog.Domain.Interfaces; // Adicionar este using
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace biblioteca_catalog.Application.Commands.Autor.CreateAutor
 {
     public class CreateAutorCommandHandler : IRequestHandler<CreateAutorCommand, int>
     {
-        private readonly biblioteca_catalogDbContext _context;
+ private readonly IAutorRepository _autorRepository; // Usar a interface do repositório
 
-        public CreateAutorCommandHandler(biblioteca_catalogDbContext context)
+        public CreateAutorCommandHandler(IAutorRepository autorRepository) // Injetar a interface do repositório
         {
-            _context = context;
+ _autorRepository = autorRepository;
         }
 
         public async Task<int> Handle(CreateAutorCommand request, CancellationToken cancellationToken)
@@ -20,8 +22,7 @@ namespace biblioteca_catalog.Application.Commands.Autor.CreateAutor
                 Nome = request.Nome
             };
 
-            _context.Autores.Add(autor);
-            await _context.SaveChangesAsync(cancellationToken);
+ await _autorRepository.AddAsync(autor); // Usar o método do repositório
 
             return autor.CodAu;
         }

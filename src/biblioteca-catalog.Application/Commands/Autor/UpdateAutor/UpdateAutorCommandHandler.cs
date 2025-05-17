@@ -1,31 +1,29 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using biblioteca_catalog.Infrastructure.Data.Context; // Verifique o namespace do seu DbContext
+using biblioteca_catalog.Domain.Interfaces; // Adicionar este using
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace biblioteca_catalog.Application.Commands.Autor.UpdateAutor
 {
     public class UpdateAutorCommandHandler : IRequestHandler<UpdateAutorCommand, Unit>
     {
-        private readonly biblioteca_catalogDbContext _context;
+        private readonly IAutorRepository _autorRepository; // Usar a interface do repositório
 
-        public UpdateAutorCommandHandler(biblioteca_catalogDbContext context)
+        public UpdateAutorCommandHandler(IAutorRepository autorRepository) // Injetar a interface do repositório
         {
-            _context = context;
+            _autorRepository = autorRepository;
         }
 
         public async Task<Unit> Handle(UpdateAutorCommand request, CancellationToken cancellationToken)
         {
-            var autor = await _context.Autores.FindAsync(new object[] { request.CodAu }, cancellationToken);
+            var autor = await _autorRepository.GetByIdAsync(request.CodAu); // Buscar o autor usando o repositório
 
             if (autor == null)
-            {
-                // Considere usar uma exceção customizada da camada de aplicação
                 throw new KeyNotFoundException($"Autor com Id {request.CodAu} não encontrado.");
-            }
 
             autor.Nome = request.Nome;
 
-            await _context.SaveChangesAsync(cancellationToken);
+            _autorRepository.Update(autor); // Atualizar o autor usando o repositório
 
             return Unit.Value;
         }
