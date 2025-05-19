@@ -1,10 +1,15 @@
 using biblioteca_catalog.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using MediatR; // Adicionar using para MediatR
-using System.Reflection; // Adicionar using para usar Assembly
+using MediatR;
+using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Logging; // Adicionar using para logging
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configurar Logging para Console
+builder.Logging.ClearProviders(); // Limpa os provedores de log existentes
+builder.Logging.AddConsole(); // Adiciona o provedor de log para console
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
@@ -28,11 +33,13 @@ builder.Services.AddMediatR(Assembly.GetExecutingAssembly()); // Adiciona Mediat
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Mova a configuração do Swagger para fora do if para que esteja sempre habilitado
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "biblioteca-catalog.API v1");
+    c.RoutePrefix = string.Empty; // Define a rota raiz para o Swagger UI
+});
 
 app.UseHttpsRedirection();
 
