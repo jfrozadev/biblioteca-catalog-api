@@ -27,7 +27,6 @@ namespace biblioteca_catalog.Application.Commands.Livro.DeleteLivro
                 throw new Exception($"Livro com código {request.Codl} não encontrado.");
             }
 
-            _context.Livros.Remove(livro);
             _livroRepository.Remove(livro); // Remover o livro usando o repositório
             return Unit.Value;
         }

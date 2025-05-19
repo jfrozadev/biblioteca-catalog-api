@@ -27,7 +27,6 @@ namespace biblioteca_catalog.Application.Commands.Livro.CreateLivro
                 AnoPublicacao = request.AnoPublicacao
             };
 
-            _context.Livros.Add(livro);
  await _livroRepository.AddAsync(livro); // Utilizado o método AddAsync do repositório
             return livro.Codl;
         }
