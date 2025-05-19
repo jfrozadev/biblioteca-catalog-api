@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using biblioteca_catalog.Domain.Interfaces; // Adicionar este using

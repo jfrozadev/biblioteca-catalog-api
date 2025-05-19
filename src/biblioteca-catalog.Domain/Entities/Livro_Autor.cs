@@ -12,7 +12,7 @@ namespace biblioteca_catalog.Domain.Entities
         public int Autor_CodAu { get; set; }
 
         // Propriedades de Navegação
-        public virtual Livro Livro { get; set; }
-        public virtual Autor Autor { get; set; }
+        public virtual Livro? Livro { get; set; } // Tornado anulável
+        public virtual Autor? Autor { get; set; } // Tornado anulável
     }
 }

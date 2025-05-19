@@ -1,6 +1,7 @@
 using MediatR;
 using System.Collections.Generic;
 using biblioteca_catalog.Application.DTOs;
+using biblioteca_catalog.Application.DTOs.EntityDtos;
 
 namespace biblioteca_catalog.Application.Queries.Livro.GetAllLivros
 {
