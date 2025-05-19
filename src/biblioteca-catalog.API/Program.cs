@@ -2,6 +2,7 @@ using biblioteca_catalog.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using MediatR; // Adicionar using para MediatR
 using System.Reflection; // Adicionar using para usar Assembly
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Adicionar serviços para Controllers
-builder.Services.AddControllers();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "biblioteca-catalog.API", Version = "v1" });
+});
 
 // Configurar o DbContext com SQL Server
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // Obtém a string de conexão do appsettings.Development.json
