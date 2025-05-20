@@ -14,8 +14,9 @@ builder.Logging.AddConsole(); // Adiciona o provedor de log para console
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers(); // <--- Esta é a linha que precisa ser adicionada
 
-// Adicionar serviços para Controllers
+// Adicionar serviços para Controllers (Configuração do Swagger para os Controllers)
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "biblioteca-catalog.API", Version = "v1" });
