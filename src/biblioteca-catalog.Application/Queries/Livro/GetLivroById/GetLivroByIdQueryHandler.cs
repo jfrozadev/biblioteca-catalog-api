@@ -15,7 +15,7 @@ namespace biblioteca_catalog.Application.Queries.Livro.GetLivroById
         public GetLivroByIdQueryHandler(ILivroRepository livroRepository, IMapper mapper)
         {
             _livroRepository = livroRepository;
-            _mapper = mapper; // Inicializa o campo _mapper
+            _mapper = mapper; // Atribui o mapper injetado à variável de instância
         }
 
         public async Task<LivroDto> Handle(GetLivroByIdQuery request, CancellationToken cancellationToken)
