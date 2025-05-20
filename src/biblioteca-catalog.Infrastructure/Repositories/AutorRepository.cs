@@ -6,10 +6,8 @@ namespace biblioteca_catalog.Infrastructure.Repositories
 {
     public class AutorRepository : RepositoryBase<Autor>, IAutorRepository
     {
-        public AutorRepository(biblioteca_catalogDbContext context) : base(context)
+        public AutorRepository(BibliotecaDbContext context) : base(context)
         {
         }
-
-        // Implementar métodos específicos para Autor, se houver, ou apenas usar os métodos da base
     }
 }

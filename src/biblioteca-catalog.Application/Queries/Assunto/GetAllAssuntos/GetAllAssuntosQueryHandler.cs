@@ -1,10 +1,7 @@
 using AutoMapper;
-using biblioteca_catalog.Domain.Interfaces;
 using biblioteca_catalog.Application.DTOs.EntityDtos;
+using biblioteca_catalog.Domain.Interfaces;
 using MediatR;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace biblioteca_catalog.Application.Queries.Assunto.GetAllAssuntos
 {
@@ -21,7 +18,7 @@ namespace biblioteca_catalog.Application.Queries.Assunto.GetAllAssuntos
 
         public async Task<IEnumerable<AssuntoDto>> Handle(GetAllAssuntosQuery request, CancellationToken cancellationToken)
         {
-            var assuntos = await _assuntoRepository.GetAssuntosAsync();
+            var assuntos = await _assuntoRepository.GetAllAsync(cancellationToken);
             return _mapper.Map<IEnumerable<AssuntoDto>>(assuntos);
         }
     }

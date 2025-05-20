@@ -1,15 +1,19 @@
 using biblioteca_catalog.Domain.Entities;
 using biblioteca_catalog.Domain.Interfaces;
 using biblioteca_catalog.Infrastructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace biblioteca_catalog.Infrastructure.Repositories
 {
     public class AssuntoRepository : RepositoryBase<Assunto>, IAssuntoRepository
     {
-        public AssuntoRepository(biblioteca_catalogDbContext context) : base(context)
+        public AssuntoRepository(BibliotecaDbContext context) : base(context)
         {
         }
 
-        // Implementar métodos específicos para Assunto, se houver, ou apenas usar os métodos da base
+        public async Task<IEnumerable<Assunto>> GetAssuntosAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Assuntos.ToListAsync(cancellationToken);
+        }
     }
 }

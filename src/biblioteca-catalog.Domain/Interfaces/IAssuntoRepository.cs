@@ -4,6 +4,6 @@ namespace biblioteca_catalog.Domain.Interfaces
 {
     public interface IAssuntoRepository : IRepository<Assunto>
     {
-        // Adicionar métodos específicos para Assunto, se necessário
+        Task<IEnumerable<Assunto>> GetAssuntosAsync(CancellationToken cancellationToken = default);
     }
 }
