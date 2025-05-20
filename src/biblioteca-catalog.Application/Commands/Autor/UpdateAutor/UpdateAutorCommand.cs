@@ -1,10 +1,11 @@
 using MediatR;
+using biblioteca_catalog.Application.DTOs.EntityDtos;
 
 namespace biblioteca_catalog.Application.Commands.Autor.UpdateAutor
 {
-    public class UpdateAutorCommand : IRequest<Unit>
+    public record UpdateAutorCommand : IRequest<AutorDto>
     {
         public int CodAu { get; set; }
-        public string Nome { get; set; }
+        public string Nome { get; init; }
     }
 }

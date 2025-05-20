@@ -5,7 +5,7 @@ using biblioteca_catalog.Domain.Interfaces; // Adicionar este using
 
 namespace biblioteca_catalog.Application.Queries.Autor.GetAutorById
 {
-    public class GetAutorByIdQueryHandler : IRequestHandler<GetAutorByIdQuery, AutorDto?>
+ public class GetAutorByIdQueryHandler : IRequestHandler<GetAutorByIdQuery, AutorDto>
     {
         private readonly IAutorRepository _autorRepository; // Usar a interface do repositório
         private readonly IMapper _mapper;
@@ -16,10 +16,10 @@ namespace biblioteca_catalog.Application.Queries.Autor.GetAutorById
             _mapper = mapper;
         }
 
-        public async Task<AutorDto?> Handle(GetAutorByIdQuery request, CancellationToken cancellationToken)
+ public async Task<AutorDto> Handle(GetAutorByIdQuery request, CancellationToken cancellationToken)
         {
             var autor = await _autorRepository.GetByIdAsync(request.CodAu); // Buscar o autor usando o repositório
-
+            
             if (autor == null)
             {
                 return null;

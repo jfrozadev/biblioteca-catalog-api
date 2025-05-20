@@ -1,9 +1,8 @@
 using MediatR;
-using biblioteca_catalog.Domain.Interfaces; // Adicionar este using
+using biblioteca_catalog.Domain.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
-using biblioteca_catalog.Domain.Entities; // Pode ser necessário para encontrar a entidade antes de remover
-using System.Collections.Generic; // Para KeyNotFoundException
+using System.Collections.Generic;
 
 namespace biblioteca_catalog.Application.Commands.Autor.DeleteAutor
 {
