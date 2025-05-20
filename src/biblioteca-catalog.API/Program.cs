@@ -14,7 +14,7 @@ builder.Logging.AddConsole(); // Adiciona o provedor de log para console
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers(); // <--- Esta é a linha que precisa ser adicionada
+builder.Services.AddControllers(); // <--- Esta linha já estava incluída
 
 // Adicionar serviços para Controllers (Configuração do Swagger para os Controllers)
 builder.Services.AddSwaggerGen(c =>
@@ -39,7 +39,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "biblioteca-catalog.API v1");
-    c.RoutePrefix = string.Empty; // Define a rota raiz para o Swagger UI
+    c.RoutePrefix = "swagger"; // <--- Esta linha foi alterada para "swagger"
 });
 
 app.UseHttpsRedirection();
