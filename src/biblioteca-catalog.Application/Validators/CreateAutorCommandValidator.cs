@@ -11,7 +11,9 @@ namespace biblioteca_catalog.Application.Validators
                 .NotEmpty().WithMessage("O nome é obrigatório.")
                 .MaximumLength(100).WithMessage("O nome não pode exceder 100 caracteres.");
 
-            // Adicione outras regras de validação conforme necessário para a criação de um Autor
+            RuleFor(c => c.Sobrenome)
+                .NotEmpty().WithMessage("O sobrenome é obrigatório.")
+                .MaximumLength(100).WithMessage("O sobrenome não pode exceder 100 caracteres.");
         }
     }
 }
