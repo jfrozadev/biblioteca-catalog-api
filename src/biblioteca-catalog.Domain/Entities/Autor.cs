@@ -7,6 +7,6 @@ namespace biblioteca_catalog.Domain.Entities
         public int CodAu { get; set; }
         public string Nome { get; set; }
 
-        public List<Livro_Autor> LivroAutores { get; set; } = new List<Livro_Autor>();
+        public ICollection<Livro_Autor> LivroAutores { get; set; } = new List<Livro_Autor>();
     }
 }

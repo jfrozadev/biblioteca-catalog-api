@@ -11,7 +11,7 @@ namespace biblioteca_catalog.Domain.Entities
         public string AnoPublicacao { get; set; }
 
         // Propriedades de navegação para as associações
-        public List<Livro_Autor> LivroAutores { get; set; }
-        public List<Livro_Assunto> LivroAssuntos { get; set; }
+        public ICollection<Livro_Autor> LivroAutores { get; set; } = new List<Livro_Autor>();
+        public ICollection<Livro_Assunto> LivroAssuntos { get; set; } = new List<Livro_Assunto>();
     }
 }

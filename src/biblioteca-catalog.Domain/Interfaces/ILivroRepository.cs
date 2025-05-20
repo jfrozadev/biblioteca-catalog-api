@@ -4,6 +4,6 @@ namespace biblioteca_catalog.Domain.Interfaces
 {
     public interface ILivroRepository : IRepository<Livro>
     {
-        // Add specific methods for Livro if needed
+        // Adicionar métodos específicos para Livro, se necessário
     }
 }
