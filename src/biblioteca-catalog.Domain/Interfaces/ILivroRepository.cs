@@ -9,5 +9,6 @@ namespace biblioteca_catalog.Domain.Interfaces
         Task AddAsync(Livro entity, CancellationToken cancellationToken = default);
         void Update(Livro entity);
         void Remove(Livro entity);
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

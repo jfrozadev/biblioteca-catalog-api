@@ -1,36 +1,34 @@
 using MediatR;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using biblioteca_catalog.Domain.Interfaces; // Adicionar este using
-using biblioteca_catalog.Domain.Entities; // Pode ser necessário para encontrar a entidade antes de atualizar
+using AutoMapper;
+using biblioteca_catalog.Domain.Interfaces;
+using biblioteca_catalog.Domain.Exceptions;
 
 namespace biblioteca_catalog.Application.Commands.Livro.UpdateLivro
 {
     public class UpdateLivroCommandHandler : IRequestHandler<UpdateLivroCommand, Unit>
     {
-        private readonly ILivroRepository _livroRepository; // Usar a interface do repositório
+        private readonly ILivroRepository _livroRepository;
+        private readonly IMapper _mapper;
 
-        public UpdateLivroCommandHandler(ILivroRepository livroRepository) // Injetar a interface do repositório
+        public UpdateLivroCommandHandler(ILivroRepository livroRepository, IMapper mapper)
         {
             _livroRepository = livroRepository;
+            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateLivroCommand request, CancellationToken cancellationToken)
         {
-            var livro = await _livroRepository.GetByIdAsync(request.Codl); // Buscar o livro usando o repositório
+            var livro = await _livroRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (livro == null)
             {
-                throw new Exception($"Livro com Codl {request.Codl} não encontrado."); // Consider creating a specific NotFoundException
+                throw new NotFoundException($"Livro com ID {request.Id} não encontrado.");
             }
 
-            livro.Titulo = request.Titulo;
-            livro.Editora = request.Editora;
-            livro.Edicao = request.Edicao;
-            livro.AnoPublicacao = request.AnoPublicacao;
+            _mapper.Map(request, livro);
 
-            _livroRepository.Update(livro); // Atualizar o livro usando o repositório
+            _livroRepository.Update(livro);
+            await _livroRepository.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

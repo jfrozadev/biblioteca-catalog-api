@@ -7,8 +7,8 @@ namespace biblioteca_catalog.Application.Validators
     {
         public UpdateLivroCommandValidator()
         {
-            RuleFor(x => x.Codl)
-                .GreaterThan(0).WithMessage("O código do livro (Codl) deve ser maior que zero.");
+            RuleFor(x => x.Id)
+                .GreaterThan(0).WithMessage("O código do livro (Id) deve ser maior que zero.");
 
             RuleFor(x => x.Titulo)
                 .NotEmpty().WithMessage("O Título do livro não pode ser vazio.");
