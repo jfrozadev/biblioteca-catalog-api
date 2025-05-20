@@ -1,7 +1,7 @@
 using AutoMapper;
 using MediatR;
-using biblioteca_catalog.Application.DTOs.EntityDtos; // Use the correct DTO namespace
-using biblioteca_catalog.Domain.Interfaces; // Add this using for repository interface
+using biblioteca_catalog.Application.DTOs.EntityDtos;
+using biblioteca_catalog.Domain.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,17 +9,18 @@ namespace biblioteca_catalog.Application.Queries.Livro.GetLivroById
 {
     public class GetLivroByIdQueryHandler : IRequestHandler<GetLivroByIdQuery, LivroDto>
     {
-        private readonly ILivroRepository _livroRepository; // Use the repository interface
+        private readonly ILivroRepository _livroRepository;
         private readonly IMapper _mapper;
 
-        public GetLivroByIdQueryHandler(ILivroRepository livroRepository, IMapper mapper) // Inject repository and mapper
+        public GetLivroByIdQueryHandler(ILivroRepository livroRepository, IMapper mapper)
         {
             _livroRepository = livroRepository;
+            _mapper = mapper; // Inicializa o campo _mapper
         }
 
         public async Task<LivroDto> Handle(GetLivroByIdQuery request, CancellationToken cancellationToken)
         {
-            var livro = await _livroRepository.GetByIdAsync(request.Codl); // Use the repository to get the livro
+            var livro = await _livroRepository.GetByIdAsync(request.Codl);
 
             if (livro == null)
             {
