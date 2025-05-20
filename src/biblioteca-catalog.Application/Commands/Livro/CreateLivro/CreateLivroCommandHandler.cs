@@ -3,23 +3,22 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using biblioteca_catalog.Domain.Entities;
-using biblioteca_catalog.Domain.Interfaces; // Adicionado using para a interface do repositório
+using biblioteca_catalog.Domain.Interfaces;
 
 namespace biblioteca_catalog.Application.Commands.Livro.CreateLivro
 {
     public class CreateLivroCommandHandler : IRequestHandler<CreateLivroCommand, int>
     {
-        private readonly ILivroRepository _livroRepository; // Substituído DbContext pela interface do repositório
+        private readonly ILivroRepository _livroRepository;
 
-        public CreateLivroCommandHandler(ILivroRepository livroRepository) // Injetado a interface do repositório
+        public CreateLivroCommandHandler(ILivroRepository livroRepository)
         {
             _livroRepository = livroRepository;
         }
 
         public async Task<int> Handle(CreateLivroCommand request, CancellationToken cancellationToken)
         {
-            var livro = new Domain.Entities.Livro
- // Removido 'Domain.Entities.' pois o using para a entidade Livro já existe.
+            var livro = new Livro
             {
                 Titulo = request.Titulo,
                 Editora = request.Editora,
@@ -27,7 +26,9 @@ namespace biblioteca_catalog.Application.Commands.Livro.CreateLivro
                 AnoPublicacao = request.AnoPublicacao
             };
 
- await _livroRepository.AddAsync(livro); // Utilizado o método AddAsync do repositório
+            await _livroRepository.AddAsync(livro, cancellationToken);
+            await _livroRepository.SaveChangesAsync(cancellationToken);
+
             return livro.Codl;
         }
     }
