@@ -9,7 +9,5 @@ namespace biblioteca_catalog.Infrastructure.Repositories
         public LivroRepository(biblioteca_catalogDbContext context) : base(context)
         {
         }
-
-        // Implementar métodos específicos para Livro, se houver, ou apenas usar os métodos da base
     }
 }

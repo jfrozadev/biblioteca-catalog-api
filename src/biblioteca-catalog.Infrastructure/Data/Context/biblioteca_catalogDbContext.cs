@@ -5,20 +5,23 @@ namespace biblioteca_catalog.Infrastructure.Data.Context
 {
     public class biblioteca_catalogDbContext : DbContext
     {
-        public biblioteca_catalogDbContext(DbContextOptions<biblioteca_catalogDbContext> options)
-            : base(options)
+        public DbSet<Livro> Livros { get; set; }
+        public DbSet<Autor> Autores { get; set; }
+        public DbSet<Assunto> Assuntos { get; set; }
+        public DbSet<Livro_Autor> Livros_Autores { get; set; }
+        public DbSet<Livro_Assunto> Livros_Assuntos { get; set; }
+
+        public biblioteca_catalogDbContext(DbContextOptions<biblioteca_catalogDbContext> options) : base(options)
         {
         }
 
-        public DbSet<Livro> Livros { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Livro_Autor>()
+                .HasKey(la => new { la.LivroId, la.AutorId });
 
-        // Adicione DbSets para Autor, Assunto, Livro_Autor, Livro_Assunto aqui quando as entidades forem criadas.
-
-        // Opcionalmente, sobrescreva o método OnModelCreating para configurar relacionamentos e outras propriedades do modelo
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     // Configurações de modelo aqui
-        //     base.OnModelCreating(modelBuilder);
-        // }
+            modelBuilder.Entity<Livro_Assunto>()
+                .HasKey(la => new { la.LivroId, la.AssuntoId });
+        }
     }
 }

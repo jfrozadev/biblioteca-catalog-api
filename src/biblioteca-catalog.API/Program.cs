@@ -3,18 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using MediatR;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.Logging; // Adicionar using para logging
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar Logging para Console
-builder.Logging.ClearProviders(); // Limpa os provedores de log existentes
-builder.Logging.AddConsole(); // Adiciona o provedor de log para console
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers(); // <--- Esta linha já estava incluída
+builder.Services.AddControllers();
 
 // Adicionar serviços para Controllers (Configuração do Swagger para os Controllers)
 builder.Services.AddSwaggerGen(c =>
@@ -23,23 +23,27 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Configurar o DbContext com SQL Server
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // Obtém a string de conexão do appsettings.Development.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<biblioteca_catalogDbContext>(options =>
-    options.UseSqlServer(connectionString)); // Configura o DbContext para usar SQL Server
+    options.UseSqlServer(connectionString));
+
+// Add Repositories
+builder.Services.AddScoped<ILivroRepository, LivroRepository>();
+builder.Services.AddScoped<IAutorRepository, AutorRepository>();
+builder.Services.AddScoped<IAssuntoRepository, AssuntoRepository>();
 
 // Configurar MediatR
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly()); // Adiciona MediatR ao container de DI
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// Mova a configuração do Swagger para fora do if para que esteja sempre habilitado
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "biblioteca-catalog.API v1");
-    c.RoutePrefix = "swagger"; // <--- Esta linha foi alterada para "swagger"
+    c.RoutePrefix = "swagger";
 });
 
 app.UseHttpsRedirection();
