@@ -1,7 +1,5 @@
 using biblioteca_catalog.Application.Commands.Livro.CreateLivro;
 using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 using biblioteca_catalog.Domain.Entities;
 using biblioteca_catalog.Domain.Interfaces;
 
