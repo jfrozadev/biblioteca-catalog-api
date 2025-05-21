@@ -5,10 +5,10 @@ namespace biblioteca_catalog.Domain.Entities
     public class Livro
     {
         public int Codl { get; set; }
-        public string Titulo { get; set; }
-        public string Editora { get; set; }
+        public required string Titulo { get; set; }
+        public required string Editora { get; set; }
         public int Edicao { get; set; }
-        public string AnoPublicacao { get; set; }
+        public required string AnoPublicacao { get; set; }
 
         // Propriedades de navegação para as associações
         public ICollection<Livro_Autor> LivroAutores { get; set; } = new List<Livro_Autor>();
