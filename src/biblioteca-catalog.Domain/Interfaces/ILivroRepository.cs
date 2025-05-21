@@ -7,8 +7,8 @@ namespace biblioteca_catalog.Domain.Interfaces
         Task<Livro?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<IEnumerable<Livro>> GetAllAsync(CancellationToken cancellationToken = default);
         Task AddAsync(Livro entity, CancellationToken cancellationToken = default);
-        void Update(Livro entity);
-        void Remove(Livro entity);
+        new void Update(Livro entity);
+        new void Remove(Livro entity);
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
