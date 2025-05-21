@@ -13,6 +13,6 @@ namespace biblioteca_catalog.Domain.Entities
 
         // Propriedades de Navegação
         public virtual Livro? Livro { get; set; } // Tornado anulável
-        public virtual Autor? Autor { get; set; } // Tornado anulável.....
+        public virtual Autor? Autor { get; set; } // Tornado anulável
     }
 }
