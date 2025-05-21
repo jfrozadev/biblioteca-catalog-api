@@ -1,4 +1,3 @@
-csharp
 using biblioteca_catalog.Application.DTOs.EntityDtos;
 using MediatR;
 
