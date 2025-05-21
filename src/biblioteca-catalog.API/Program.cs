@@ -6,11 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddInfrastructure();
-builder.Services.AddMediatR(typeof(AssuntoProfile).Assembly);
-builder.Services.AddAutoMapper(typeof(AssuntoProfile));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AssuntoProfile>());
+builder.Services.AddAutoMapper(typeof(AssuntoProfile).Assembly);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

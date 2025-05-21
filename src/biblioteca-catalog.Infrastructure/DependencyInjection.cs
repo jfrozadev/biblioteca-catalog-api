@@ -4,7 +4,10 @@ namespace biblioteca_catalog.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            services.AddMediatR(typeof(DependencyInjection).Assembly);
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
+                typeof(DependencyInjection).Assembly,
+                typeof(CreateLivroCommandHandler).Assembly));
+
             services.AddDbContext<biblioteca_catalogDbContext>(options =>
                 options.UseSqlServer("Server=.;Database=biblioteca_catalog;Trusted_Connection=True;"));
 
