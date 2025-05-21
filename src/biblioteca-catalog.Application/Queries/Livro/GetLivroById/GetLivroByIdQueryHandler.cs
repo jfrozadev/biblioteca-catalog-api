@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace biblioteca_catalog.Application.Queries.Livro.GetLivroById
 {
-    public class GetLivroByIdQueryHandler : IRequestHandler<GetLivroByIdQuery, LivroDto>
+    public class GetLivroByIdQueryHandler : IRequestHandler<GetLivroByIdQuery, LivroDto?>
     {
         private readonly ILivroRepository _livroRepository;
         private readonly IMapper _mapper;
@@ -15,19 +15,14 @@ namespace biblioteca_catalog.Application.Queries.Livro.GetLivroById
         public GetLivroByIdQueryHandler(ILivroRepository livroRepository, IMapper mapper)
         {
             _livroRepository = livroRepository;
-            _mapper = mapper; // Atribui o mapper injetado à variável de instância
+            _mapper = mapper;
         }
 
-        public async Task<LivroDto> Handle(GetLivroByIdQuery request, CancellationToken cancellationToken)
+        public async Task<LivroDto?> Handle(GetLivroByIdQuery request, CancellationToken cancellationToken)
         {
-            var livro = await _livroRepository.GetByIdAsync(request.Codl);
+            var livro = await _livroRepository.GetByIdAsync(request.Codl, cancellationToken);
 
-            if (livro == null)
-            {
-                return null;
-            }
-
-            return _mapper.Map<LivroDto>(livro);
+            return livro == null ? null : _mapper.Map<LivroDto>(livro);
         }
     }
 }
