@@ -1,11 +1,7 @@
-csharp
 using AutoMapper;
 using biblioteca_catalog.Application.DTOs.EntityDtos;
 using biblioteca_catalog.Domain.Interfaces;
 using MediatR;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace biblioteca_catalog.Application.Queries.Autor.GetAllAutores
 {
