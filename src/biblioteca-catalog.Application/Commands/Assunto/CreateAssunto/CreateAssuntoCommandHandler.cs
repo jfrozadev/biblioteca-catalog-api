@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace biblioteca_catalog.Application.Commands.Assunto.CreateAssunto
 {
-    public class CreateAssuntoCommandHandler : IRequestHandler<CreateAssuntoCommand, AssuntoDto>
+    public class CreateAssuntoCommandHandler : IRequestHandler<CreateAssuntoCommand, int>
     {
         private readonly IAssuntoRepository _assuntoRepository;
         private readonly IMapper _mapper;
@@ -19,13 +19,17 @@ namespace biblioteca_catalog.Application.Commands.Assunto.CreateAssunto
             _mapper = mapper;
         }
 
-        public async Task<AssuntoDto> Handle(CreateAssuntoCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateAssuntoCommand request, CancellationToken cancellationToken)
         {
-            var assunto = _mapper.Map<Domain.Entities.Assunto>(request);
+            var assunto = new Assunto
+            {
+                Nome = request.Nome,
+                Descricao = request.Descricao
+            };
 
             var createdAssunto = await _assuntoRepository.CreateAsync(assunto);
 
-            return _mapper.Map<AssuntoDto>(createdAssunto);
+            return createdAssunto.Id;
         }
     }
 }
