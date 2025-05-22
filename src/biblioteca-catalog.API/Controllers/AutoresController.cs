@@ -3,6 +3,7 @@ using biblioteca_catalog.Application.Commands.Autor.DeleteAutor;
 using biblioteca_catalog.Application.Commands.Autor.UpdateAutor;
 using biblioteca_catalog.Application.DTOs.EntityDtos;
 using biblioteca_catalog.Application.Queries.Autor.GetAutorById;
+using biblioteca_catalog.Application.Queries.Autor.GetAllAutores;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,30 +20,30 @@ namespace biblioteca_catalog.API.Controllers
             _mediator = mediator;
         }
 
-        // GET: api/Autores/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AutorDto>> GetAutor(int id)
         {
             var query = new GetAutorByIdQuery { Id = id };
             var autor = await _mediator.Send(query);
 
-            if (autor == null)
-            {
-                return NotFound();
-            }
-
-            return autor;
+            return autor != null ? Ok(autor) : NotFound();
         }
 
-        // POST: api/Autores
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AutorDto>>> GetAllAutores()
+        {
+            var query = new GetAllAutoresQuery();
+            var autores = await _mediator.Send(query);
+            return Ok(autores);
+        }
+
         [HttpPost]
         public async Task<ActionResult<AutorDto>> PostAutor(CreateAutorCommand command)
         {
             var autor = await _mediator.Send(command);
-            return CreatedAtAction("GetAutor", new { id = autor.Id }, autor);
+            return CreatedAtAction(nameof(GetAutor), new { id = autor.Id }, autor);
         }
 
-        // PUT: api/Autores/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAutor(int id, UpdateAutorCommand command)
         {
@@ -52,28 +53,15 @@ namespace biblioteca_catalog.API.Controllers
             }
 
             var result = await _mediator.Send(command);
-
-            if (!result)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return result ? NoContent() : NotFound();
         }
 
-        // DELETE: api/Autores/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAutor(int id)
         {
             var command = new DeleteAutorCommand { Id = id };
             var result = await _mediator.Send(command);
-
-            if (!result)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return result ? NoContent() : NotFound();
         }
     }
 }

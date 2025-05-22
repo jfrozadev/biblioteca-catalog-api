@@ -23,12 +23,17 @@ namespace biblioteca_catalog.API.Controllers
         public async Task<IActionResult> Post([FromBody] CreateAssuntoCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(result);
+            return CreatedAtAction(nameof(GetById), new { id = result }, result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] UpdateAssuntoCommand command)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateAssuntoCommand command)
         {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+
             var result = await _mediator.Send(command);
             return Ok(result);
         }
@@ -37,18 +42,16 @@ namespace biblioteca_catalog.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteAssuntoCommand(id);
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            await _mediator.Send(command);
+            return NoContent();
         }
 
-        // Adicionar métodos para consultas (Queries) conforme necessário
-        // Exemplo:
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> Get(int id)
-        // {
-        //     var query = new GetAssuntoByIdQuery(id);
-        //     var result = await _mediator.Send(query);
-        //     return Ok(result);
-        // }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var query = new GetAssuntoByIdQuery(id);
+            var result = await _mediator.Send(query);
+            return result != null ? Ok(result) : NotFound();
+        }
     }
 }

@@ -5,7 +5,7 @@ using biblioteca_catalog.Application.Commands.Livro.UpdateLivro;
 using biblioteca_catalog.Application.Commands.Livro.DeleteLivro;
 using biblioteca_catalog.Application.Queries.Livro.GetLivroById;
 using biblioteca_catalog.Application.Queries.Livro.GetAllLivros;
-using biblioteca_catalog.Application.DTOs.EntityDtos; // Verifique se o namespace está correto
+using biblioteca_catalog.Application.DTOs.EntityDtos;
 
 namespace biblioteca_catalog.API.Controllers
 {
@@ -34,6 +34,7 @@ namespace biblioteca_catalog.API.Controllers
             {
                 return BadRequest();
             }
+
             await _mediator.Send(command);
             return NoContent();
         }
@@ -42,8 +43,8 @@ namespace biblioteca_catalog.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteLivroCommand { Codl = id };
-            await _mediator.Send(command);
-            return NoContent();
+            var result = await _mediator.Send(command);
+            return result ? NoContent() : NotFound();
         }
 
         [HttpGet("{id}")]
@@ -52,16 +53,11 @@ namespace biblioteca_catalog.API.Controllers
             var query = new GetLivroByIdQuery { Codl = id };
             var livro = await _mediator.Send(query);
 
-            if (livro == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(livro);
+            return livro != null ? Ok(livro) : NotFound();
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<LivroDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<LivroDto>>> GetAll()
         {
             var query = new GetAllLivrosQuery();
             var livros = await _mediator.Send(query);
