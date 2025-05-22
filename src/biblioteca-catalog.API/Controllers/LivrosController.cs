@@ -20,15 +20,31 @@ namespace biblioteca_catalog.API.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<LivroDto>>> GetAllLivros()
+        {
+            var query = new GetAllLivrosQuery();
+            var livros = await _mediator.Send(query);
+            return Ok(livros);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<LivroDto>> GetLivroById(int id)
+        {
+            var query = new GetLivroByIdQuery(id);
+            var livro = await _mediator.Send(query);
+            return livro != null ? Ok(livro) : NotFound();
+        }
+
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateLivroCommand command)
+        public async Task<ActionResult<int>> CreateLivro([FromBody] CreateLivroCommand command)
         {
             var livroId = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { id = livroId }, livroId);
+            return CreatedAtAction(nameof(GetLivroById), new { id = livroId }, livroId);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateLivroCommand command)
+        public async Task<IActionResult> UpdateLivro(int id, [FromBody] UpdateLivroCommand command)
         {
             if (id != command.Codl)
             {
@@ -40,28 +56,11 @@ namespace biblioteca_catalog.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteLivro(int id)
         {
-            var command = new DeleteLivroCommand { Codl = id };
+            var command = new DeleteLivroCommand(id);
             var result = await _mediator.Send(command);
             return result ? NoContent() : NotFound();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<LivroDto>> GetById(int id)
-        {
-            var query = new GetLivroByIdQuery { Codl = id };
-            var livro = await _mediator.Send(query);
-
-            return livro != null ? Ok(livro) : NotFound();
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<LivroDto>>> GetAll()
-        {
-            var query = new GetAllLivrosQuery();
-            var livros = await _mediator.Send(query);
-            return Ok(livros);
         }
     }
 }
