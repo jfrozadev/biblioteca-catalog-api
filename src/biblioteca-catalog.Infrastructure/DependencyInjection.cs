@@ -1,3 +1,10 @@
+using Microsoft.Extensions.DependencyInjection;
+using MediatR;
+using biblioteca_catalog.Application.Commands.Livro.CreateLivro;
+using biblioteca_catalog.Infrastructure.Data.Context;
+using biblioteca_catalog.Domain.Interfaces;
+using biblioteca_catalog.Infrastructure.Repositories;
+
 namespace biblioteca_catalog.Infrastructure
 {
     public static class DependencyInjection
