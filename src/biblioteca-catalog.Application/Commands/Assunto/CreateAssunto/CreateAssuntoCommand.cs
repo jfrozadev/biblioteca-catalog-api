@@ -1,3 +1,5 @@
+using MediatR;
+
 namespace biblioteca_catalog.Application.Commands.Assunto.CreateAssunto
 {
     public class CreateAssuntoCommand : IRequest<int>
