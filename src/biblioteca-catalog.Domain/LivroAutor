@@ -1,0 +1,13 @@
+csharp
+namespace biblioteca_catalog.Domain.Entities
+{
+    public class LivroAutor
+    {
+        public int Livro_CodL { get; set; }
+        public int Autor_CodAu { get; set; }
+
+        // Propriedades de navegação para as entidades relacionadas
+        public Livro Livro { get; set; }
+        public Autor Autor { get; set; }
+    }
+}
